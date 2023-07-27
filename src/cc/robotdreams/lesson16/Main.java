@@ -1,19 +1,35 @@
 package cc.robotdreams.lesson16;
 
-public class Main
-{
-    // Поле BankApplication
+import cc.robotdreams.lesson16.exceptions.WrongAccountException;
+import cc.robotdreams.lesson16.exceptions.WrongCurrencyException;
+import cc.robotdreams.lesson16.exceptions.WrongOperationException;
 
-    static public void main(String[] args){
-        /*
-            Викликати метод processWrapper з наступними параметрами:
-            id = accountId000, amount 50, currency USD
-            id = accountId003, amount 250, currency HRV
-            id = accountId001, amount 50, currency EUR
-            id = accountId001, amount 50, currency USD
-            id = accountId001, amount 50, currency USD
-         */
+public class Main {
+
+    public static void main(String[] args) {
+        BankApplication bankApplication = new BankApplication();
+
+        processWrapper(bankApplication, "accountId000", 50, "USD");
+        processWrapper(bankApplication, "accountId003", 250, "HRV");
+        processWrapper(bankApplication, "accountId001", 50, "EUR");
+        processWrapper(bankApplication, "accountId001", 50, "USD");
+        processWrapper(bankApplication, "accountId001", 2000, "USD");
     }
 
-    // Метод processWrapper(String, int, String)
+    public static void processWrapper(BankApplication bankApplication, String accountId, int amount, String currency) {
+        try {
+            bankApplication.process(accountId, amount, currency);
+            System.out.println("Операція успішно виконана");
+        } catch (WrongAccountException e) {
+            System.out.println("Такого акаунту не існує");
+        } catch (WrongCurrencyException e) {
+            System.out.println("Акаунт має рахунок в іншій валюті");
+        } catch (WrongOperationException e) {
+            System.out.println("Акаунт не має достатньо коштів");
+        } catch (Exception e) {
+            System.out.println("Сталася помилка при процесінгу, спробуйте ще раз");
+        } finally {
+            System.out.println("Дякуємо, що скористалися нашим сервісом");
+        }
+    }
 }
